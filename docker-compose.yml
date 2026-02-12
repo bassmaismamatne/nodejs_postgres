@@ -3,33 +3,30 @@ version: '3'
 services:
   db:
     image: postgres:13
-    container_name: postgres_db_node
+    container_name: postgres_db_node_bassma
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: mysecretpassword
       POSTGRES_DB: mydb
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
 
   node:
-    build: .
-    container_name: nodejs_app
+    image: ${DOCKER_USERNAME}/nodejs_postgres:latest
+    container_name: nodejs_app_bassma
     depends_on:
       - db
     ports:
       - "3008:3000"
-    volumes:
-      - .:/app
-      - /app/node_modules
     environment:
       - DATABASE_URL=postgres://postgres:mysecretpassword@db:5432/mydb
-      - NODE_ENV=development
+      - NODE_ENV=prod
       - CHOKIDAR_USEPOLLING=true
     restart: unless-stopped
-    command: ["npm", "run", "dev"]
+    command: ["npm", "run", "start"]
 
 
 volumes:
