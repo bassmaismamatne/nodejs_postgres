@@ -14,10 +14,10 @@ jobs:
 
       - uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
+          username: ${{ secrets.DOCKER_TOKEN }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - run: docker build -t ${{ secrets.DOCKER_USERNAME }}/nodejs_postgres:dev .
+      - run: docker build -t ${{ secrets.DOCKER_TOKEN }}/nodejs_postgres:dev .
 
-      - run: docker push ${{ secrets.DOCKER_USERNAME }}/nodejs_postgres:dev
+      - run: docker push ${{ secrets.DOCKER_TOKEN }}/nodejs_postgres:dev
 
