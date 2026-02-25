@@ -23,13 +23,16 @@ services:
       - CHOKIDAR_USEPOLLING=true
     restart: unless-stopped
     command: ["npm", "run", "start"]
-    port:
+    ports:
       - "3027:3000"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.bassma.rule=Host(`bassma.soudry-ort.online`)"
       - "traefik.http.routers.bassma.entrypoints=web"
-    network:
+      - "traefik.http.routers.bassma.entrypoints=websecure"
+      - "traefik.http.routers.bassma.tls.certresolver=myresolver"
+      - "traefik.http.routers.bassma-http.middlewares=redirect-to-https"
+    networks:
       - admin_web_traefik
 
 volumes:
