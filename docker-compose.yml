@@ -17,15 +17,24 @@ services:
     container_name: nodejs_app_bassma
     depends_on:
       - db
-    ports:
-      - "3008:3000"
     environment:
       - DATABASE_URL=postgres://postgres:mysecretpassword@db:5432/mydb
       - NODE_ENV=prod
       - CHOKIDAR_USEPOLLING=true
     restart: unless-stopped
     command: ["npm", "run", "start"]
-
+    port:
+      - "3027:3000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bassma.rule=Host(`bassma.soudry-ort.online`)"
+      - "traefik.http.routers.bassma.entrypoints=web"
+    network:
+      - admin_web_traefik
 
 volumes:
   db_data:
+
+networks:
+  admin_web_traefik:
+    external: true
